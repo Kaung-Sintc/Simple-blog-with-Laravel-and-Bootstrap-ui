@@ -60,10 +60,19 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @admin
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}"
+                                        >
+                                            Dashboard
+                                        </a>
+
+                                    @endadmin
+
                                     <a class="dropdown-item" href="{{ route('dashboard') }}"
                                     >
-                                        Dashboard
+                                        Your articles
                                     </a>
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

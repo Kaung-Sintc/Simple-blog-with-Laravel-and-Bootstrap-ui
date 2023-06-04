@@ -12,13 +12,13 @@
     @foreach ($articles as $article)
         <div class="list-group-item d-flex justify-content-between align-items-start mb-3">
             <div class="ms-2 me-auto">
-                <h3 class="fw-bold">{{ Str::title($article->title) }}</h3>
+                <h3>{{ Str::title($article->title) }}</h3>
                 <span class="fw-light fs-6">
-                    {{ $article->created_at->format('D d') }}
-                    ({{ $article->created_at->diffForHumans() }})
+                    {{ $article->created_at->format('D d') }} |
+                    {{ $article->created_at->format('h:i a') }}
                 </span>
                 |
-                <span class="fw-light fs-6 fw-bold">{{ $article->user->name }}</span>
+                <span class="fw-light fs-6 fw-bold">{{ $article->category->name }}</span>
                 <hr>
                 <p>
                     {!!
@@ -30,15 +30,11 @@
                     )
                 !!}
                 </p>
-                {{-- <a
-                    href="{{ route('articles.show', $article->slug) }}"
-                    class="btn btn-link"
-                >
-                    See details <i class="bi bi-arrow-down-right"></i>
-                </a> --}}
             </div>
         </div>
-    @endforeach
+
+        @endforeach
+        {{ $articles->links() }}
 </div>
 
 

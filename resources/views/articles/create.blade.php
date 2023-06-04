@@ -13,7 +13,7 @@
     @csrf
 
     <div class="mb-3">
-        <label class=" form-label" for="">Article's Title</label>
+        <label class=" form-label fw-bold" for="">Article's Title</label>
         <input
         type="text"
         value="{{ old('title') }}"
@@ -25,7 +25,25 @@
     </div>
 
     <div class="mb-3">
-        <label class=" form-label" for="">Article's Content</label>
+        <label class=" form-label fw-bold" for="">Choose Category</label>
+        <select class="form-select" name="category">
+            <option value="">Choose Category</option>
+            @foreach (\App\Models\Category::all() as $category)
+                <option
+                    value="{{ $category->id }}"
+                    {{ (int) old('category') === $category->id ? 'selected' : '' }}
+                >
+                    {{ $category->name }}
+                </option>
+            @endforeach
+        </select>
+        @error('content')
+            <div class=" invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="mb-3">
+        <label class=" form-label fw-bold" for="">Article's Content</label>
         <textarea
             class=" form-control @error('content') is-invalid @enderror"
             name="content"

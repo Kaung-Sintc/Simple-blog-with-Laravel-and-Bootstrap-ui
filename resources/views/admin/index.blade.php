@@ -1,16 +1,49 @@
 @extends('layouts.app')
+@section('title', 'Admin Dashboard | Articles')
 @section('content')
     <div class=" container">
         <div class="row">
-            <div class="col-12">
-                <h3>Manage Your Articles</h3>
-                <hr>
+            <div class="col-3">
+                <h5 class="mb-4">Ghost Admin's Dashboard</h5>
+                <div class="list-group">
+                    <a
+                        href="#"
+                        class="list-group-item list-group-item-action @if (request()->routeIs('admin.dashboard'))
+                            active
+                        @endif"
+                    >
+                        Articles
+                    </a>
+                    <a
+                        href="{{ route('categories.index') }}"
+                        class="list-group-item list-group-item-action
+                        @if (request()->routeIs('categories.index'))
+                            active
+                        @endif"
+                    >
+                        Categories
+                    </a>
 
-                <table class=" table">
+                    <a
+                        href="{{ route('admin.users') }}"
+                        class="list-group-item list-group-item-action
+                        @if (request()->routeIs('admin.users'))
+                            active
+                        @endif"
+                    >
+                        Users
+                    </a>
+                </div>
+            </div>
+            <div class="col-9">
+
+
+                <table class="table">
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Article</th>
+                            <th>Author</th>
                             <th>Category</th>
                             <th>Control</th>
                             <th>Created At</th>
@@ -28,17 +61,13 @@
                                         {{ Str::limit($article->content, 30, '...') }}
                                     </span>
                                 </td>
+                                <td>{{ $article->user->name }}</td>
                                 <td>
                                     {{ $article->category->name }}
                                 </td>
 
                                 <td>
                                     <div class="btn-group">
-
-                                        <a href="{{ route('articles.edit', $article->slug) }}"
-                                            class="btn btn-sm btn-outline-dark">
-                                            <i class=" bi bi-pencil"></i>
-                                        </a>
 
                                         <button form="aritcleDeleteForm{{ $article->id }}"
                                             class=" btn btn-sm btn-outline-dark"

@@ -40,8 +40,11 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
+        $this->authorize('update', $request->user()->article);
+
         $request->user()->articles()->create(array_merge($request->only('title', 'content'), [
             'slug' => Str::slug($request->title) . uniqid("-"),
+            'category_id' => $request->category
         ]));
 
         return redirect()->route('articles.index')->with('success', 'Article created successfully');
@@ -60,6 +63,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
+        $this->authorize('view', $article);
+
         return view('articles.edit', compact('article'));
     }
 
@@ -71,7 +76,9 @@ class ArticleController extends Controller
         // authorization
         $this->authorize('update', $article);
 
-        $article->update($request->only('title', 'content'));
+        $article->update(array_merge($request->only('title', 'content'), [
+            'slug' => Str::slug($request->title) . uniqid('-'),
+        ]));
 
         return redirect()->route('articles.index')->with('success', 'Article updated');
     }
