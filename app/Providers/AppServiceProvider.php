@@ -24,8 +24,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        Blade::if('admin', function() {
-            return auth()->user()->email === 'kgsint@mail.co.uk';
+        Blade::if('role', function(string $role) {
+            return auth()->user() ->role === $role;
         });
     }
 

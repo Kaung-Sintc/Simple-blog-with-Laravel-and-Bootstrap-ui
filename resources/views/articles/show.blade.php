@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', $article->title)
+
 @section('content')
     <a href="{{ route('articles.index') }}" class="btn btn-primary mb-3">Back</a>
 

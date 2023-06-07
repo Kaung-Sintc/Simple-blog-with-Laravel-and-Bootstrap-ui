@@ -44,6 +44,7 @@
                             <th>#</th>
                             <th>Namae</th>
                             <th>Email</th>
+                            <th>Number of Articles</th>
                             <th>Created At</th>
                             <th>Updated At</th>
                         </tr>
@@ -56,6 +57,7 @@
                                     {{ $user->name }}
                                 </td>
                                 <td>{{ $user->email }}</td>
+                                <td>{{ $user->articles->count() }}</td>
 
                                 <td>
                                     <p class=" small mb-0">

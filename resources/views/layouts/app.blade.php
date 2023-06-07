@@ -60,13 +60,13 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    @admin
+                                    @role('admin')
                                         <a class="dropdown-item" href="{{ route('admin.dashboard') }}"
                                         >
                                             Dashboard
                                         </a>
 
-                                    @endadmin
+                                    @endrole
 
                                     <a class="dropdown-item" href="{{ route('dashboard') }}"
                                     >

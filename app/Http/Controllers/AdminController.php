@@ -10,7 +10,7 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'admin']);
+        $this->middleware('role:admin');
     }
 
     public function index()
@@ -23,7 +23,7 @@ class AdminController extends Controller
     public function user()
     {
         return view('admin.users', [
-            'users' => User::paginate(5),
+            'users' => User::whereRole('user')->paginate(5),
         ]);
     }
 }
