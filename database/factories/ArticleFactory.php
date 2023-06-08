@@ -28,7 +28,8 @@ class ArticleFactory extends Factory
             'title' => $title,
             'content' => $para,
             'slug' => Str::slug($title) . uniqid("-"),
-            'user_id' => rand(1, 2),
+            'excerpt' => Str::limit($para, 200),
+            'user_id' => rand(1, 5),
             'category_id' => rand(1, 5)
         ];
     }

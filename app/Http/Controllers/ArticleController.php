@@ -7,12 +7,13 @@ use App\Models\Article;
 use Illuminate\Support\Str;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Models\Category;
 
 class ArticleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show', 'search']);
     }
 
     /**
@@ -20,11 +21,18 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return view('articles.index', [
-            'articles' => Article::latest()
+
+        $articles = Article::when((bool) request('category') ?? false, fn($article) =>
+                                $article->whereBelongsTo(Category::whereSlug(request('category'))->first())
+                                )
+                                ->when(request()->has('s'), function($article) {
+                                    return $article->orWhere('title', 'LIKE', '%'.request('s').'%');
+                                })
+                                ->latest()
                                 ->paginate(5)
-                                ->withQueryString()
-        ]);
+                                ->withQueryString();
+
+        return view('articles.index', compact('articles'));
     }
 
     /**
@@ -40,10 +48,10 @@ class ArticleController extends Controller
      */
     public function store(StoreArticleRequest $request)
     {
-        $this->authorize('update', $request->user()->article);
 
         $request->user()->articles()->create(array_merge($request->only('title', 'content'), [
             'slug' => Str::slug($request->title) . uniqid("-"),
+            'excerpt' => Str::limit($request->content, 200),
             'category_id' => $request->category
         ]));
 
@@ -93,5 +101,20 @@ class ArticleController extends Controller
         $article->delete();
 
         return redirect()->route('articles.index')->with('success', 'Article deleted successfully');
+    }
+
+    public function search()
+    {
+        $articles = Article::when((bool) request('category') ?? false, fn($article) =>
+                                $article->whereBelongsTo(Category::whereSlug(request('category'))->first())
+                                )
+                                ->when(request()->has('s'), function($article) {
+                                    return $article->orWhere('title', 'LIKE', '%'.request('s').'%');
+                                })
+                                ->latest()
+                                ->paginate(5)
+                                ->withQueryString();
+
+        return view('articles.index', compact('articles'));
     }
 }

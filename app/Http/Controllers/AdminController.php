@@ -16,7 +16,11 @@ class AdminController extends Controller
     public function index()
     {
         return view('admin.index', [
-            'articles' => Article::latest()->paginate(5),
+            'articles' => Article::
+                                select('articles.*', 'users.role as role')
+                                ->leftJoin('users', 'articles.user_id', 'users.id')
+                                ->where('role', 'user')
+                                ->latest()->paginate(5),
         ]);
     }
 

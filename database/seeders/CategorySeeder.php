@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class CategorySeeder extends Seeder
 {
@@ -16,7 +17,10 @@ class CategorySeeder extends Seeder
         $categories = ['Sport', 'News', 'Science', 'Web Development', 'UI/UX'];
 
         for($i = 0; $i < 5; $i++) {
-            Category::factory()->create(['name' => $categories[$i]]);
+            Category::factory()->create([
+                'name' => $categories[$i],
+                'slug' => Str::slug($categories[$i])
+            ]);
         }
     }
 }
