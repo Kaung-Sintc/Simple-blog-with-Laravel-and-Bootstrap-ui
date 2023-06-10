@@ -23,6 +23,10 @@ And create database and change your database name in `.env` file run:
 ```
 php artisan migrate
 ```
+To populate data :
+```
+php artisan db:seed
+```
 To compile and hot reload, run:
 ```
 npm run dev
