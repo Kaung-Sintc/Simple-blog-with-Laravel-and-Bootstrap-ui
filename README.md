@@ -1,7 +1,7 @@
 # Simple Blog with Laravel and Bootstrap UI
 
 ## Features
-- Authentication with bootstrap/ui
+- Authentication with laravel/ui package
 - Authrization with Policies
 - Roles and Permission
 - Comments and Replies in Articles
