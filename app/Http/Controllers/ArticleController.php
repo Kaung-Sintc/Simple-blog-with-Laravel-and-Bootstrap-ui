@@ -71,6 +71,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
+        // authorization
         $this->authorize('view', $article);
 
         return view('articles.edit', compact('article'));
@@ -96,13 +97,20 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
+        // authorization
         $this->authorize('delete', $article);
 
         $article->delete();
 
+        // if admin delete article, redirect back to admin dashboard
+        if(auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard')->with('success', 'Article deleted successfully');
+        }
+
         return redirect()->route('articles.index')->with('success', 'Article deleted successfully');
     }
 
+    // search articles
     public function search()
     {
         $articles = Article::when((bool) request('category') ?? false, fn($article) =>

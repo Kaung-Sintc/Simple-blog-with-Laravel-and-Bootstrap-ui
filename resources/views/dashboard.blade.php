@@ -22,7 +22,7 @@
                             <tr>
                                 <td>{{ $articles->firstItem() + $index }}</td>
                                 <td>
-                                    <a href="" class="link-dark">{{ $article->title }}</a>
+                                    <a href="{{ route('articles.show', $article->slug) }}" class="link-dark">{{ $article->title }}</a>
                                     <br>
                                     <span class=" small text-black-50">
                                         {{ Str::limit($article->content, 30, '...') }}

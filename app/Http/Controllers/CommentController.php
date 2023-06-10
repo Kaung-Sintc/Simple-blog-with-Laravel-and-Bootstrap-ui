@@ -26,9 +26,22 @@ class CommentController extends Controller
         return back();
     }
 
-    public function update()
+    public function edit(Comment $comment)
     {
 
+        // authorize
+        $this->authorize('view', $comment);
+        return view('comments.edit', compact('comment'));
+    }
+
+    public function update(Comment $comment)
+    {
+        // authorize
+        $this->authorize('update', $comment);
+
+        $comment->update(request(['content']));
+
+        return redirect()->route('articles.show', Article::find($comment->article_id)->slug);
     }
 
     public function delete(Comment $comment)

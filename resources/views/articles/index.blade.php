@@ -2,10 +2,12 @@
 
 @section('content')
 
-@if(session('success'))
-    <div class="alert alert-primary">
-        {{ session('success') }}
-    </div>
+{{-- flash message --}}
+@if (session('success'))
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
 @endif
 
 @if (!empty(request('s')))
@@ -13,6 +15,7 @@
         You search for "<span class="fw-bold">{{ request('s') }}</span>"
     </div>
 @endif
+
 <div class="d-flex justify-content-between">
     <form action="{{ route('articles.search') }}" method="GET">
 

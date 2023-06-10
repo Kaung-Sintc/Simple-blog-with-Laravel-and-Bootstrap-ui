@@ -11,7 +11,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['content', 'user_id', 'parent_id'];
+    protected $guarded = [];
 
     public function user() :BelongsTo
     {

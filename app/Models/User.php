@@ -46,7 +46,7 @@ class User extends Authenticatable
 
     public function isAdmin() :bool
     {
-        return $this->email === 'kgsint@mail.co.uk';
+        return $this->role === 'admin';
     }
 
     public function articles() :HasMany

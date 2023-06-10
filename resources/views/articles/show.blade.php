@@ -15,7 +15,7 @@
 
 
             <h6 class="card-subtitle mb-2 text-body-secondary">
-                Created by {{ $article->user->name }}
+                written by <b>{{ $article->user->name }}</b>
             </h6>
 
             <hr>
@@ -24,9 +24,10 @@
                 {{ $article->content }}
             </p>
 
+            {{-- authorize article with policy --}}
             @can('view', $article)
                 <a href="{{ route('articles.edit', $article->slug) }}" class="card-link">Edit</a>
-                <form action="{{ route('articles.destroy') }}" method="POST" class="d-inline-block">
+                <form action="{{ route('articles.destroy', $article->slug) }}" method="POST" class="d-inline-block">
                     @csrf
                     @method('DELETE')
 
@@ -37,17 +38,27 @@
         </div>
     </div>
 
+    <!-- Button trigger modal -->
+
+
+
 
     @auth
         <div class="mt-5">
             @foreach ($article->comments()->whereNull('parent_id')->get() as $comment)
                 <div class="card px-3 py-1 mt-3">
-                    <h5 class="card-title">{{  $comment->user->name }}</h3>
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h5 class="card-title">{{  $comment->user->name }}</h5>
+                        {{-- authorize view --}}
+                        @can('view', $comment)
+                             <a href="{{ route('comments.edit', $comment->id) }}">Edit</a>
+                        @endcan
+                    </div>
                     <h6 class="text-muted">{{  $comment->created_at->diffForHumans() }}</h6>
                     <div>{{ $comment->content }}</div>
 
                     <div>
-                        {{-- btns --}}
+                        {{-- authorize view with policy --}}
                         @can('view', $comment)
                             <form action="{{ route('comments.delete', $comment->id) }}" class="d-inline-block" method="POST">
                                 @csrf
@@ -55,7 +66,8 @@
 
                                 <button class="btn text-danger text-decoration-underline">Del</button>
                             </form>
-                            @endcan
+                        @endcan
+
                             <a id="reply-btn" class="mb-2 user-select-none" style="cursor:pointer">Reply</a>
                         {{-- reply form --}}
                         <form id="reply-form" action="{{ route('comments.store', $article->slug) }}" method="post" class="d-none mt-2">
@@ -66,12 +78,30 @@
                         </form>
                     </div>
 
+                    {{-- replies --}}
                     <div class="mt-2">
                         @foreach ($comment->replies as $reply)
                                 <div class="card ms-3 p-1 mb-2">
-                                    <h6>{{ $reply->user->name }}</h6>
+                                    <div class="d-flex justify-content-between align-items-baseline">
+                                        <h6>{{ $reply->user->name }}</h6>
+                                        {{-- authorize view --}}
+                                        @can('view', $reply)
+                                            <a href="{{ route('comments.edit', $reply->id) }}">Edit</a>
+                                        @endcan
+                                    </div>
                                     <h6 class="text-muted">{{  $comment->created_at->diffForHumans() }}</h6>
                                     <p>{{ $reply->content }}</p>
+
+                                    {{-- authorize view --}}
+                                    @can('view', $reply)
+                                    {{-- reply delete form --}}
+                                        <form action="{{ route('comments.delete', $reply->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button class="btn btn-link text-danger">Del</button>
+                                        </form>
+                                    @endcan
                                 </div>
                         @endforeach
                     </div>
