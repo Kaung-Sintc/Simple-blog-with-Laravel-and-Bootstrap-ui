@@ -2,7 +2,7 @@
 
 ## Features
 - Authentication with laravel/ui package
-- Authrization with Policies
+- Authorization with Policies
 - Roles and Permission
 - Comments and Replies in Articles
 
@@ -19,7 +19,6 @@ copy `.env.example` file to `.env` :
 ```
 cp .env.example .env
 ```
-And create database and change your database name in `.env` file run:
 ```
 php artisan migrate
 ```
